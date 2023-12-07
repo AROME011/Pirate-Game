@@ -7,8 +7,6 @@ import game.ship as ship
 import game.crewmate as crewmate
 from game.context import Context
 import jsonpickle
-from game.display import announce
-import game.config as config
 import game.items as items
 import sys
 import datetime
@@ -82,7 +80,7 @@ class LairGate (location.SubLocation):
         self.verbs ["lair"] = self
 
         self.eventUsed = False
-        self.riddle_amount = 3
+        self.riddle_amount = 5
 
     def enter(self):
         announce ("You climb around some rocks and find a gate to a large cave")

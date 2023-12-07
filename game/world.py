@@ -1,4 +1,3 @@
-
 import game.location as location
 from game.locations import *
 from game.events import *
@@ -7,8 +6,10 @@ import game.context as context
 from game.display import announce
 import game.config as config
 import game.combat as Combat
-
 import random
+
+
+
 
 class World (context.Context):
 
@@ -35,7 +36,7 @@ class World (context.Context):
         self.locs[self.homex][self.homey] = homeport.HomePort (self.homex, self.homey, self)
 
         #Add new islands to this list:
-        island_list = [island.Island, KrakenIsland.KrakenIsland]
+        island_list = [island.Island, KrakenIsland.KrakenIsland, YourIsland.Yourisland]
         for cur_island in island_list:
             placed = False
             while placed == False:

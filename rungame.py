@@ -21,5 +21,4 @@ while (config.the_player.notdone()):
     config.the_player.get_world().start_day ()
     config.the_player.process_day()
     config.the_player.get_world().end_day ()
-
 # world_v.print()

@@ -18,7 +18,7 @@ class Island (location.Location):
         self.locations["trees"] = Trees(self)
 
     def enter (self, ship):
-        print ("arrived at an island")
+        print ("arrived at an wrong island")
 
     def visit (self):
         config.the_player.location = self.starting_location

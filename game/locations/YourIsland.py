@@ -242,7 +242,7 @@ class Lagoon(location.SubLocation):
 
     def handle_animal_outcome(self, outcome, animal_name):
         if outcome == "food":
-            print('The duck leaves you with some food it found for your travels home. The duck runs away.')
+            print(f'The {animal_name} leaves you with some food it found for your travels home. The {animal_name} runs away.')
             health_gain_percentage = random.uniform(0.1, 0.2)
             for i in config.the_player.get_pirates():
                 health_gain = int(i.max_health * health_gain_percentage)
@@ -402,58 +402,61 @@ class Forest(location.SubLocation):
         self.wondering = False
 
     def enter(self):
-        print("You have arrived at the forest. Theres a storm overhead")
+        print("You have arrived at the forest. There's a storm overhead")
         print('a: wonder')
         print('b: go east')
         print(f'c: go south\n')
 
     def process_verb(self, verb, cmd_list, nouns):
-        if (verb == "east"):#verb == "north" or verb == "west" or verb == "east" or verb == "south"
+        if verb == "east":
             config.the_player.next_loc = self.main_location.locations["mountain"]
-        if (verb == "south"):#verb == "north" or verb == "west" or verb == "east" or verb == "south"
+        elif verb == "south":
             config.the_player.next_loc = self.main_location.locations["castle"]
-        if (verb == "north") or (verb == "west"):
-            print(f'You tried to go {verb} but theres no where to go')
-        if (verb == "wonder"):
-            self.wondering = True # you want to wonder
+        elif verb in ["north", "west"]:
+            print(f'You tried to go {verb} but there\'s nowhere to go')
+        elif verb == "wonder":
+            self.wondering = True  # you want to wonder
             self.HandleEvent()
-            
 
     def HandleEvent(self):
-        while self.wondering and not self.noteFound:#if you still want to wonder but you have not found the note
+        while self.wondering and not self.noteFound:  # if you still want to wonder but you have not found the note
             print("You investigate the forest and...")
             self.fallingTree()
 
-            if random.random() < .43:
+            if random.random() < 0.43:
                 self.findNote()
 
             self.ask_to_continue_wondering()
-        
-        if not self.wondering:
-            print("It looks like you explored the whole forest and cant really wonder anymore")
 
+        print("It looks like you explored the whole forest and can't really wonder anymore")
 
-    
     def fallingTree(self):
         if random.choice([True, False]):
-            damage_percentage = random.uniform(0.1, 0.5) #Random damage between 10% and 50%
+            damage_percentage = random.uniform(0.1, 0.5)
             for pirate in config.the_player.get_pirates():
                 damage = int(pirate.max_health * damage_percentage)
-                pirate.health -= damage 
+                pirate.health -= damage
                 print(f"A tree falls! {pirate.get_name()} takes {damage} damage.")
         else:
-            print('A tree crashes besides you.')
+            print('A tree crashes beside you.')
 
     def findNote(self):
         print("You find a weathered note on the forest floor.")
-        print(f"The note hints at having to 'swim' to the bottom of water.\n")
-
-        self.noteFound = True  
+        print(f"The note hints at having to 'swim' to the bottom of the water.\n")
+        self.noteFound = True
 
     def ask_to_continue_wondering(self):
-        self.wonder_question = input('Would you like to continue wondering? (yes/no): ')
+        while True:
+            self.wonder_question = input('Would you like to continue wondering? (yes/no): ')
 
-        if self.wonder_question.lower() == 'no':
-            self.wondering = False
-        else:
-            self.HandleEvent()
+            if self.wonder_question.lower() == 'no':
+                self.wondering = False
+                config.the_player.next_loc = self.main_location.locations["forest"]
+                break  # exit the loop
+
+            elif self.wonder_question.lower() == 'yes':
+                self.HandleEvent()
+                break  # exit the loop
+
+            else:
+                print("Invalid input. Please enter 'yes' or 'no'.")
